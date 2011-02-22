@@ -1,7 +1,7 @@
 YandexFotki storage for CarrierWave gem
 =======================================
 
-This gem provides a simple way to upload image files from Rails application to fotki.yandex.ru service.
+This gem provides a simple way to upload image files from Rails application to [fotki.yandex.ru](http://fotki.yandex.ru) service.
 
 Getting Started
 ---------------
