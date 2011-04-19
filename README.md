@@ -8,6 +8,7 @@ Getting Started
 
 In Rails, add it to your Gemfile:
 
+    gem 'carrierwave'
     gem 'carrierwave-yandexfotki'
 
 Quick Start
