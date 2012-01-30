@@ -37,8 +37,8 @@ module CarrierWave
           @identifier = connection.post_foto(file)
         end
 
-      private
-      
+        private
+
         def url_resized(size)
           if i = %w[800 500 300 150 100 75 50 ORIG ORIGINAL XL L M S XS XXS XXXS].index(size.to_s.upcase)
             suffix = %w[XL L M S XS XXS XXXS orig orig XL L M S XS XXS XXXS][i]
