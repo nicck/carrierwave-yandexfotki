@@ -1,12 +1,10 @@
 require 'spec_helper'
 
 describe YandexFotki::ActiveRecord do
-  describe 'extended class' do
-    let!(:klass) { Class.new.send(:extend, YandexFotki::ActiveRecord) }
+  describe 'AR subclass' do
+    let!(:klass) { Class.new(ActiveRecord::Base) }
 
-    subject { klass }
-
-    it { should respond_to :mount_before_save_uploader }
+    specify { klass.should respond_to :mount_before_save_uploader }
 
     describe '.mount_before_save_uploader' do
       before {
@@ -27,6 +25,6 @@ describe YandexFotki::ActiveRecord do
         klass.class_eval { mount_before_save_uploader :image, options }
       end
     end
-  end
 
+  end
 end
