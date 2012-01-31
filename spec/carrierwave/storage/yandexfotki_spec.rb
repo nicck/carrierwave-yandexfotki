@@ -56,7 +56,7 @@ describe CarrierWave::Storage::YandexFotki do
       YAML.should_receive(:load).with(image_identifier).and_return(identifier)
       YFFile.should_receive(:new).with(uploader, storage, identifier)
 
-      storage.retrieve!(image_identifier)
+      storage.retrieve!(image_identifier).should == yf_file
     end
   end
 
