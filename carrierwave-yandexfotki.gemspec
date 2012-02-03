@@ -21,6 +21,8 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "rails", ">= 3.2.0"
   s.add_development_dependency "rspec", "~> 2.0"
+  s.add_development_dependency('multipart-post') # for net_http adapter
+  s.add_development_dependency('nokogiri')
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
