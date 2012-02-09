@@ -5,3 +5,4 @@ pkg/*
 vendor/*
 .rspec
 .rbenv-*
+coverage/
