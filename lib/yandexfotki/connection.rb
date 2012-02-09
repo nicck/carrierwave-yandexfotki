@@ -52,12 +52,6 @@ module YandexFotki
       http.get(resource_url, authorization_header)
     end
 
-    def api_set_foto_info(image_id, info_xml)
-      resource_url = api_image_url(image_id)
-
-      http.put(url, info_xml, authorization_header.merge("Content-Type" => 'application/atom+xml; type=entry'))
-    end
-
     def get_token
       @token ||= Rails.cache.fetch "YandexFotki:token:#{@login}" do
         url = "http://auth.mobile.yandex.ru/yamrsa/key/"

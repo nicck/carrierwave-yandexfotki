@@ -65,3 +65,64 @@ describe CarrierWave::Storage::YandexFotki do
     it { should be_a(::YandexFotki::Connection) }
   end
 end
+
+describe CarrierWave::Storage::YandexFotki::File do
+  let(:uploader) { double 'uploader' }
+  let(:storage) { double 'storage', :connection => double('connection') }
+  let(:identifier) { {'image_id' => 42, 'image_url' => "url_of_image"} }
+  let(:file) { double(File) }
+  let(:yf_file) { CarrierWave::Storage::YandexFotki::File.new(uploader, storage, identifier) }
+
+  describe '#store' do
+    it 'should post file using storage connection' do
+      storage.connection.should_receive(:post_foto).with(file)
+      yf_file.store(file)
+    end
+  end
+
+  describe '#url' do
+    context 'default style' do
+      it 'should return original url from identifier' do
+        yf_file.url.should == identifier['image_url']
+      end
+    end
+
+    context 'integer sizes' do
+      size_to_suffix = {
+        800 => 'XL', 500 => 'L', 300 => 'M', 150 => 'S', 100 => 'XS', 75 => 'XXS', 50 => 'XXXS',
+      }
+      size_to_suffix.each do |k, v|
+        it 'url(%d) should return url with %s suffix' % [k, v] do
+          yf_file.url(k).should == 'url_of_' + v
+        end
+      end
+    end
+
+    context 'version (symbol or string) sizes' do
+      size_to_suffix = {
+        :ORIG => 'orig', :ORIGINAL => 'orig', :XL => 'XL', :L => 'L', :M => 'M', :S => 'S', :XS => 'XS', :XXS => 'XXS', :XXXS => 'XXXS',
+        :orig => 'orig', :original => 'orig', :xl => 'XL', :l => 'L', :m => 'M', :s => 'S', :xs => 'XS', :xxs => 'XXS', :xxxs => 'XXXS'
+      }
+      size_to_suffix.each do |k, v|
+        it 'url(:%s) should return url with %s suffix' % [k, v] do
+          yf_file.url(k).should == 'url_of_' + v
+        end
+        it 'url("%s") should return url with %s suffix' % [k, v] do
+          yf_file.url(k.to_s).should == 'url_of_' + v
+        end
+      end
+    end
+
+    it 'should return nil if no style found' do
+      variants = ['foo', 123, :bar]
+      variants.each { |v| yf_file.url(v).should_not be }
+    end
+  end
+
+  describe '#delete' do
+    it 'should pass image id from identifier to connection delete_foto method' do
+      storage.connection.should_receive(:delete_foto)
+      yf_file.delete
+    end
+  end
+end
